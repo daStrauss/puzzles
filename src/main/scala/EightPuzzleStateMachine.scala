@@ -12,8 +12,10 @@ object EightPuzzleStateMachine {
     state.switch(xLocation, swapLocation).filter(_ != state)
   }
 
-  def findChildren(state: EightPuzzle): List[EightPuzzle] =
-    List(MoveUp(), MoveDown(), MoveLeft(), MoveRight()).flatMap(update(_, state).toOption)
+  def findChildren(state: EightPuzzle): List[(Action, EightPuzzle)] =
+    List(MoveUp(), MoveDown(), MoveLeft(), MoveRight()).flatMap { action =>
+      update(action, state).toOption.map((action, _))
+    }
 }
 
 sealed trait Action

@@ -1,5 +1,8 @@
 import com.twitter.util.Try
 
+import scala.annotation.tailrec
+import scala.util.Random
+
 case class EightPuzzle(
   loc11: Piece,
   loc12: Piece,
@@ -15,7 +18,7 @@ case class EightPuzzle(
   def get(row: Int, col: Int): Piece =
     listForm(positionToIndex(row, col))
 
-  def switch(locA: Tuple2[Int, Int], locB: Tuple2[Int, Int]): Try[EightPuzzle] = {
+  def switch(locA: (Int, Int), locB: (Int, Int)): Try[EightPuzzle] = {
     val atA = listForm(posToI(locA))
     val atB = listForm(posToI(locB))
 
@@ -47,6 +50,29 @@ object EightPuzzle {
       case l1 :: l2 :: l3 :: l4 :: l5 :: l6 :: l7 :: l8 :: l9 :: Nil =>
         EightPuzzle(l1, l2, l3, l4, l5, l6, l7, l8, l9)
     }
+  }
+
+  def random(): EightPuzzle = {
+    val places: List[Piece] = List(A(), B(), C(), D(), E(), F(), G(), H(), X())
+
+    scala.util.Random.shuffle(places) match {
+      case l1 :: l2 :: l3 :: l4 :: l5:: l6 :: l7 :: l8 :: l9 ::Nil =>
+        EightPuzzle(l1, l2, l3, l4, l5, l6, l7, l8, l9)
+      case _ => throw new RuntimeException("something weird happened")
+    }
+  }
+
+  def random(steps: Int) = {
+    @tailrec
+    def step(level: Int, state: EightPuzzle): EightPuzzle = {
+      if (level == 0) {
+        state
+      } else {
+        val nsz = Random.shuffle(EightPuzzleStateMachine.findChildren(state))
+        step(level - 1, nsz.map(_._2).head)
+      }
+    }
+    step(steps, EightPuzzleSolver.goal)
   }
 }
 

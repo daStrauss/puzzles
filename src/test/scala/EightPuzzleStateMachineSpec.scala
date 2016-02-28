@@ -12,9 +12,8 @@ class EightPuzzleStateMachineSpec extends WordSpec with Matchers {
           EightPuzzle(B(), C(), A(), D(), X(), E(), F(), G(), H()),
           EightPuzzle(B(), C(), A(), D(), E(), H(), F(), G(), X())
         )
-        children.toSet should be(knownChildren)
+        children.map(_._2).toSet should be(knownChildren)
       }
     }
   }
-
 }
