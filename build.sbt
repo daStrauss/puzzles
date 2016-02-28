@@ -14,7 +14,8 @@ lazy val commonSettings = Seq(
     "com.twitter.finatra" % "finatra-http_2.11" % versions.finatra,
     "com.twitter.finatra" % "finatra-slf4j_2.11" % versions.finatra,
     "com.twitter.finatra" %% "finatra-httpclient" % versions.finatra,
-    "com.twitter.inject" %% "inject-core" % versions.finatra
+    "com.twitter.inject" %% "inject-core" % versions.finatra,
+    "org.scalatest" %% "scalatest" % "2.2.6"
   )
 )
 
