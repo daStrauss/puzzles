@@ -12,7 +12,7 @@ class EightPuzzleController @Inject() (
   }
 
   get("/new_puzzle") { request: Request =>
-    val simplePuzzle = EightPuzzle.random(20)
+    val simplePuzzle = EightPuzzle.random(120)
     response.ok.view(
      "puzzle_view.mustache",
      puzzleViewData("new puzzle", simplePuzzle)
