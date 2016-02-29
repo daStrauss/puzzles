@@ -1,6 +1,10 @@
+package puzzles
+
 import org.scalatest.{Matchers, WordSpec}
 
 class EightPieceSolverSpec extends WordSpec with Matchers {
+  val testSolver = new EightPuzzleSolver(EightPuzzleSolver.goal)
+
   "Solving a simple puzzle" when {
     "using a simple puzzle" should {
       "use the right number of steps" in {
@@ -8,7 +12,7 @@ class EightPieceSolverSpec extends WordSpec with Matchers {
           .foldLeft(EightPuzzleSolver.goal){
             case (state, action) => EightPuzzleStateMachine.update(action, state).get()
           }
-        val sol = EightPuzzleSolver.solve(fiveDeep)
+        val sol = testSolver.solve(fiveDeep)
         sol.pathCost should be(6)
       }
     }

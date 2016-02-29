@@ -1,4 +1,5 @@
-import com.twitter.util.Try
+package puzzles
+
 import org.scalatest.{Matchers, WordSpec}
 
 class EightPieceSpec extends WordSpec with Matchers {

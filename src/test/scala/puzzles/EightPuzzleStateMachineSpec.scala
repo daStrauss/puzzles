@@ -1,3 +1,5 @@
+package puzzles
+
 import org.scalatest.{Matchers, WordSpec}
 
 class EightPuzzleStateMachineSpec extends WordSpec with Matchers {

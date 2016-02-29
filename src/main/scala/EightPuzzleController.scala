@@ -1,8 +1,12 @@
+import com.google.inject.Inject
+import puzzles._
 import com.twitter.finagle.http.Request
 import com.twitter.finatra.http.Controller
 import com.twitter.finatra.request.QueryParam
 
-class EightPuzzleController extends Controller {
+class EightPuzzleController @Inject() (
+  eightPuzzleSolver: EightPuzzleSolver
+) extends Controller {
   get("/") { request: Request =>
     response.ok.view("hello.mustache", Map("title"->""))
   }
@@ -57,9 +61,9 @@ class EightPuzzleController extends Controller {
   get("/show_solution/:puzzle") { request: PuzzleRequest =>
     EightPuzzle.fromRowFlat(request.puzzle)
       .map { puzzle =>
-        val solution = EightPuzzleSolver.solve(puzzle)
-        val path = EightPuzzleSolver.expandSolution(solution)
-        val actions = path.map(_._1.getClass.getName).reverse.mkString(" -> ")
+        val solution = eightPuzzleSolver.solve(puzzle)
+        val path = eightPuzzleSolver.expandSolution(solution)
+        val actions = path.map(_._1.toString).reverse.mkString(" -> ")
         val puzzleView = puzzleViewData("Solution", puzzle) ++ Map("solution"->true, "actions" -> actions)
         response.ok.view(
           "puzzle_view.mustache",
@@ -70,7 +74,7 @@ class EightPuzzleController extends Controller {
 
   private[this] def puzzleViewData(title: String, puzzle: EightPuzzle): Map[String, Any] = {
     val moves = EightPuzzleStateMachine.findChildren(puzzle).map(_._1)
-      .map(_.getClass.getName)
+      .map(_.toString)
       .map((_, true))
       .toMap
     Map(
@@ -88,21 +92,6 @@ class EightPuzzleController extends Controller {
     ) ++ moves
   }
 }
-
-case class UnsolvedPuzzle(
-  title: String,
-  puzzleString: String,
-  loc11: String,
-  loc12: String,
-  loc13: String,
-  loc21: String,
-  loc22: String,
-  loc23: String,
-  loc31: String,
-  loc32: String,
-  loc33: String,
-  moves: Map[String, String]
-)
 
 case class PuzzleRequest(
   @QueryParam puzzle: String

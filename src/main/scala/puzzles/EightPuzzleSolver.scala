@@ -1,10 +1,16 @@
+package puzzles
+
+import graph.{Root, Leaf, Solver}
+
 import scala.annotation.tailrec
 
-object EightPuzzleSolver {
-  val goal = EightPuzzle(A(), B(), C(), D(), E(), F(), G(), H(), X())
+
+class EightPuzzleSolver(
+  goal: EightPuzzle
+) extends Solver[EightPuzzle, Action]{
 
   @tailrec
-  def search(exploredSet: Set[EightPuzzle], frontier: List[Node]): Node = {
+  private[this] def search(exploredSet: Set[EightPuzzle], frontier: List[EightNode]): EightNode = {
     frontier match {
       case Nil => throw new RuntimeException("No solutions found")
       case head :: tail => {
@@ -32,8 +38,8 @@ object EightPuzzleSolver {
     }
   }
 
-  def solve(eightPuzzle: EightPuzzle): Node = {
-    val rootNode = Root(eightPuzzle)
+  def solve(eightPuzzle: EightPuzzle): EightNode = {
+    val rootNode = Root[EightPuzzle, Action](eightPuzzle)
     val initialFrontier = EightPuzzleStateMachine.findChildren(eightPuzzle).map {
       case (action, child) => Leaf(
         state = child,
@@ -45,29 +51,16 @@ object EightPuzzleSolver {
     search(Set.empty, initialFrontier)
   }
 
-  def expandSolution(node: Node): List[(Action, EightPuzzle)] = {
+  def expandSolution(node: EightNode): List[(Action, EightPuzzle)] = {
     @tailrec
-    def expand(node: Node, queue: List[(Action, EightPuzzle)]): List[(Action, EightPuzzle)] = node match {
-      case leaf: Leaf => expand(leaf.parent, queue :+ (leaf.action, leaf.state))
-      case root: Root => queue
+    def expand(node: EightNode, queue: List[(Action, EightPuzzle)]): List[(Action, EightPuzzle)] = node match {
+      case leaf: Leaf[EightPuzzle, Action] => expand(leaf.parent, queue :+ (leaf.action, leaf.state))
+      case root: Root[EightPuzzle, Action] => queue
     }
     expand(node, List.empty)
   }
 }
 
-trait Node {
-  def state: EightPuzzle
-  def pathCost: Int
+object EightPuzzleSolver {
+  val goal = EightPuzzle(A(), B(), C(), D(), E(), F(), G(), H(), X())
 }
-
-case class Leaf(
-  state: EightPuzzle,
-  parent: Node,
-  action: Action,
-  pathCost: Int
-) extends Node
-
-case class Root(
-  state: EightPuzzle,
-  pathCost: Int = 0
-) extends Node

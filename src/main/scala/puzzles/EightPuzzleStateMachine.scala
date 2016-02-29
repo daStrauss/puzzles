@@ -1,3 +1,5 @@
+package puzzles
+
 import com.twitter.util.Try
 
 object EightPuzzleStateMachine {
@@ -19,8 +21,8 @@ object EightPuzzleStateMachine {
 }
 
 sealed trait Action
-case class MoveUp() extends Action
-case class MoveDown() extends Action
-case class MoveLeft() extends Action
-case class MoveRight() extends Action
+case class MoveUp()    extends Action { override def toString = "Move Up" }
+case class MoveDown()  extends Action { override def toString = "Move Down" }
+case class MoveLeft()  extends Action { override def toString = "Move Left" }
+case class MoveRight() extends Action { override def toString = "Move Right" }
 
