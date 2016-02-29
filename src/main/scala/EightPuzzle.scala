@@ -42,6 +42,7 @@ case class EightPuzzle(
   def emptyLocation = indexToPosition(listForm.zipWithIndex.find(_._1 == X()).head._2)
 
   def prettyPrint: Unit = println(listForm.sliding(3,3).toList.map(_.mkString("\t")).mkString("\n"))
+  def straightPrint: String = listForm.map(_.toString).mkString("")
 }
 
 object EightPuzzle {

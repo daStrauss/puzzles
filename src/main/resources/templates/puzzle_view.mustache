@@ -1,0 +1,51 @@
+{{>header}}
+
+<table class="table-bordered">
+    <tbody>
+    <tr>
+      <td>{{loc11}}</td>
+      <td>{{loc12}}</td>
+      <td>{{loc13}}</td>
+    </tr>
+    <tr>
+      <td>{{loc21}}</td>
+      <td>{{loc22}}</td>
+      <td>{{loc23}}</td>
+    </tr>
+    <tr>
+      <td>{{loc31}}</td>
+      <td>{{loc32}}</td>
+      <td>{{loc33}}</td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+    {{#MoveLeft}}
+        <a href="/left/{{puzzleString}}" class="btn btn-primary">Move Left</a><br>
+    {{/MoveLeft}}
+
+    {{#MoveRight}}
+        <a href="/right/{{puzzleString}}" class="btn btn-primary">Move Right</a><br>
+    {{/MoveRight}}
+
+    {{#MoveUp}}
+        <a href="/up/{{puzzleString}}" class="btn btn-primary">Move Up</a><br>
+    {{/MoveUp}}
+
+    {{#MoveDown}}
+        <a href="/down/{{puzzleString}}" class="btn btn-primary">Move Down</a><br>
+    {{/MoveDown}}
+
+<br> <br>
+{{^solution}}
+<a href="/show_solution/{{puzzleString}}" class="btn btn-danger">Show Me The Solution</a>
+{{/solution}}
+
+{{#solution}}
+<p> here is the solution chain </p>
+{{actions}}
+{{/solution}}
+
+
+{{>footer}}

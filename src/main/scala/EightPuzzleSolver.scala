@@ -7,7 +7,6 @@ object EightPuzzleSolver {
   def search(exploredSet: Set[EightPuzzle], frontier: List[Node]): Node = {
     frontier match {
       case Nil => throw new RuntimeException("No solutions found")
-
       case head :: tail => {
         if (head.state == goal) {
           //winner winner chicken dinner
@@ -46,16 +45,15 @@ object EightPuzzleSolver {
     search(Set.empty, initialFrontier)
   }
 
-  def expandSolution(node: Node): List[EightPuzzle] = {
+  def expandSolution(node: Node): List[(Action, EightPuzzle)] = {
     @tailrec
-    def expand(node: Node, queue: List[EightPuzzle]): List[EightPuzzle] = node match {
-      case leaf: Leaf => expand(leaf.parent, queue :+ leaf.state)
-      case root: Root => queue :+ root.state
+    def expand(node: Node, queue: List[(Action, EightPuzzle)]): List[(Action, EightPuzzle)] = node match {
+      case leaf: Leaf => expand(leaf.parent, queue :+ (leaf.action, leaf.state))
+      case root: Root => queue
     }
     expand(node, List.empty)
   }
 }
-
 
 trait Node {
   def state: EightPuzzle
