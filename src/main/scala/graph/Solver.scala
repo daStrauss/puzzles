@@ -1,16 +1,20 @@
 package graph
 
+import com.twitter.util.Future
+
 import scala.annotation.tailrec
 
 trait Solver[S, A] {
-  def solve(initialPuzzle: S): Node[S, A]
-  def expandSolution(solution: Node[S, A]): List[(A, S)] = {
+  def solve(initialPuzzle: S): Future[Node[S, A]]
+  def expandSolution(solution: Node[S, A]): Future[List[(A, S)]] = {
     @tailrec
     def expand(node: Node[S, A], queue: List[(A, S)]): List[(A, S)] = node match {
       case leaf: Leaf[S, A] => expand(leaf.parent, queue :+ (leaf.action, leaf.state))
       case root: Root[S, A] => queue
     }
-    expand(solution, List.empty)
+    Future {
+      expand(solution, List.empty)
+    }
   }
 }
 

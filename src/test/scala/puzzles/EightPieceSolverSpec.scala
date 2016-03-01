@@ -1,5 +1,6 @@
 package puzzles
 
+import com.twitter.util.Await
 import org.scalatest.{Matchers, WordSpec}
 
 class EightPieceSolverSpec extends WordSpec with Matchers {
@@ -12,7 +13,7 @@ class EightPieceSolverSpec extends WordSpec with Matchers {
           .foldLeft(EightPuzzleSolver.goal){
             case (state, action) => EightPuzzleStateMachine.update(action, state).get()
           }
-        val sol = testSolver.solve(fiveDeep)
+        val sol = Await.result(testSolver.solve(fiveDeep))
         sol.pathCost should be(6)
       }
     }

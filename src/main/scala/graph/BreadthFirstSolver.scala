@@ -1,5 +1,7 @@
 package graph
 
+import com.twitter.util.Future
+
 import scala.annotation.tailrec
 import scala.collection.immutable.Queue
 
@@ -38,7 +40,7 @@ trait BreadthFirstSolver[S, A] extends Solver[S, A] {
     }
   }
 
-  def solve(puzzle: S): InternalNode = {
+  def solve(puzzle: S): Future[InternalNode] = {
     val rootNode = Root[S, A](puzzle)
     val initialFrontier = findChildren(puzzle).map {
       case (action, child) => Leaf(
@@ -50,6 +52,8 @@ trait BreadthFirstSolver[S, A] extends Solver[S, A] {
     }.foldLeft(Queue.empty[Leaf[S,A]]){
       case (queue, leaf) => queue.enqueue(leaf)
     }
-    search(Set.empty, initialFrontier)
+    Future {
+      search(Set.empty, initialFrontier)
+    }
   }
 }

@@ -61,11 +61,12 @@ class EightPuzzleController @Inject() (
   get("/show_solution/:puzzle") { request: PuzzleRequest =>
     EightPuzzle.fromRowFlat(request.puzzle)
       .map { puzzle =>
-        val solution = eightPuzzleSolver.solve(puzzle)
-        val path = eightPuzzleSolver.expandSolution(solution)
-        val actions = path.map(_._1.toString).reverse.mkString(" -> ")
-        val puzzleView = puzzleViewData("Solution", puzzle) ++ Map("solution"->true, "actions" -> actions)
-        response.ok.view(
+        for {
+          solution <- eightPuzzleSolver.solve(puzzle)
+          path <- eightPuzzleSolver.expandSolution(solution)
+          actions = path.map(_._1.toString).reverse.mkString(" -> ")
+          puzzleView = puzzleViewData("Solution", puzzle) ++ Map("solution"->true, "actions" -> actions)
+        } yield response.ok.view(
           "puzzle_view.mustache",
           puzzleView
         )
