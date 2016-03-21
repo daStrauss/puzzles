@@ -1,0 +1,22 @@
+<!doctype html>
+<head>
+<title> Hi </title>
+<link rel="stylesheet" href={{ url_for('static', filename='css/styles.css') }}>
+
+</head>
+
+<h1> Hello dere </h1>
+
+<table>
+
+<table class="table-bordered">
+  <tbody>
+  {% for i in range(game.board_size) %}
+    <tr>
+    {% for j in range(game.board_size) %}
+    <td> x </td>
+    {% endfor %}
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
