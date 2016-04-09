@@ -10,7 +10,7 @@ class PositionTestCase(unittest.TestCase):
 
     def test_initialization(self):
         with self.assertRaises(InvariantException):
-            Position(x=47, y=1, board_size=6)
+            Position(x_position=47, y_position=1, board_size=6)
 
 class GameTestCase(unittest.TestCase):
     def test_get_neighbors(self):
@@ -18,7 +18,8 @@ class GameTestCase(unittest.TestCase):
         a_position = game.new_position(2,2)
 
         neighbors = set(game.get_neighbors(a_position))
-        valid_neighbors = [(1,1),
+        valid_neighbors = [
+            (1,1),
             (1,2),
             (1,3),
             (2,1),
@@ -27,8 +28,8 @@ class GameTestCase(unittest.TestCase):
             (3,2),
             (3,3)]
 
-        true_neighbors = set([Position(x=x,y=y,board_size=6)
-            for x,y in valid_neighbors])
+        true_neighbors = set([Position(x_position=x, y_position=y, board_size=6)
+            for x, y in valid_neighbors])
 
         self.assertEqual(neighbors, true_neighbors)
 
@@ -38,7 +39,7 @@ class GameTestCase(unittest.TestCase):
         neighbors = set(game.get_neighbors(a_position))
 
         valid_neighbors = [(5, 4), (4, 4), (4, 5)]
-        true_neighbors = set([Position(x=x, y=y, board_size=6)
+        true_neighbors = set([Position(x_position=x, y_position=y, board_size=6)
             for x, y in valid_neighbors])
 
         self.assertEqual(neighbors, true_neighbors)
@@ -48,7 +49,21 @@ class OthelloTestCase(unittest.TestCase):
     def test_empties(self):
         othelloGame = OthelloGame(board_size=6)
         initial = othelloGame.initial_game()
-        print(initial)
+        perimeter = othelloGame.perimeter_positions(initial)
+        border = [
+            (1,1), (1,2),(1,3), (1,4),
+            (2,1), (2,4),
+            (3,1), (3,4),
+            (4,1), (4,2), (4,3), (4,4)]
+        border_positions = set([Position(x_position=x, y_position=y, board_size=6)
+            for x, y in border])
+
+        self.assertEqual(border_positions, set(perimeter))
+
+    def test_search(self):
+        othelloGame = OthelloGame(board_size=6)
+        initial = othelloGame.initial_game()
+        start_pos = othelloGame.new_position(4, 4)
+        searchd = othelloGame.search_list(start_pos, (-1, -1), initial)
+        print(searchd)
         self.assertTrue(True)
-
-
