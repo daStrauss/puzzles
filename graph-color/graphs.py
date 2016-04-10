@@ -6,7 +6,7 @@ def random_k(k):
   return [random.random() for y in range(k)]
 
 def generate_point_map(k):
-  xy_points = [y for y in zip(random_k(k), random_k(k))]
+  xy_points = [Point(x=y[0], y=y[1]) for y in zip(random_k(k), random_k(k))]
   point_map = dict(enumerate(xy_points))
   return point_map
 
