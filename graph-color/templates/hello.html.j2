@@ -1,0 +1,10 @@
+<body>
+  <figure>
+    <embed type="image/svg+xml" src={{ url_for("chart", identity=identity) }} />
+  </figure>
+
+  <p>Took {{ runtime }} seconds to solve </p>
+  <p>made {{ backtrack_calls }} calls to 'backtrack' </p>
+  <p>made {{ constraint_tests }} differet contstraint checks </p>
+  <p>explored {{ failed_node_choice }} poor node choices </p>
+</body>
